@@ -1,0 +1,82 @@
+Installing Terraform
+/usr/share/keyrings/hashicorp-archive-keyring.gpg
+-------------------------------------------------
+pub   rsa4096 2023-01-10 [SC] [verfällt: 2028-01-09]
+      798A EC65 4E5C 1542 8C8E  42EE AA16 FCBC A621 E701
+uid        [ unbekannt] HashiCorp Security (HashiCorp Package Signing) <security+packaging@hashicorp.com>
+sub   rsa4096 2023-01-10 [S] [verfällt: 2028-01-09]
+
+deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com noble main
+Holen:1 https://apt.releases.hashicorp.com noble InRelease [12,9 kB]
+OK:2 http://de.archive.ubuntu.com/ubuntu noble InRelease
+OK:3 http://download.opensuse.org/repositories/home:/Alexx2000/xUbuntu_24.04  InRelease
+Holen:4 https://download.docker.com/linux/ubuntu noble InRelease [48,8 kB]
+Holen:5 http://de.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Holen:6 https://dl.google.com/linux/chrome/deb stable InRelease [1.825 B]
+Holen:7 https://cli.github.com/packages stable InRelease [3.917 B]
+OK:8 https://repo.radeon.com/amdgpu/6.3.1/ubuntu noble InRelease
+OK:9 https://ppa.launchpadcontent.net/ansible/ansible/ubuntu noble InRelease
+Holen:10 http://de.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+OK:11 https://ppa.launchpadcontent.net/danielrichter2007/grub-customizer/ubuntu noble InRelease
+OK:12 https://packages.microsoft.com/repos/azure-cli noble InRelease
+Holen:13 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+OK:15 https://ppa.launchpadcontent.net/longsleep/golang-backports/ubuntu noble InRelease
+Holen:16 https://packages.microsoft.com/repos/code stable InRelease [3.590 B]
+OK:17 https://repo.radeon.com/rocm/apt/6.3.1 noble InRelease
+OK:14 https://prod-cdn.packages.k8s.io/repositories/isv:/kubernetes:/core:/stable:/v1.32/deb  InRelease
+Holen:18 https://dl.google.com/linux/chrome/deb stable/main amd64 Packages [1.209 B]
+Holen:19 https://apt.releases.hashicorp.com noble/main i386 Packages [70,7 kB]
+Holen:20 https://apt.releases.hashicorp.com noble/main amd64 Packages [166 kB]
+Holen:21 http://de.archive.ubuntu.com/ubuntu noble-updates/main i386 Packages [425 kB]
+Holen:22 http://de.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [853 kB]
+Holen:23 http://de.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [193 kB]
+Holen:24 http://de.archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [151 kB]
+Holen:25 http://de.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [635 kB]
+Holen:26 http://de.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [123 kB]
+Holen:27 http://de.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Components [212 B]
+Holen:28 http://de.archive.ubuntu.com/ubuntu noble-updates/universe i386 Packages [621 kB]
+Holen:29 http://de.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1.012 kB]
+Holen:30 http://de.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [253 kB]
+Holen:31 http://de.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [363 kB]
+Holen:32 http://de.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [940 B]
+Holen:33 http://de.archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [208 B]
+Holen:34 http://de.archive.ubuntu.com/ubuntu noble-backports/restricted amd64 Components [216 B]
+Holen:35 http://de.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [17,7 kB]
+Holen:36 http://de.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Components [212 B]
+Holen:37 https://packages.microsoft.com/repos/code stable/main arm64 Packages [17,1 kB]
+Holen:38 https://packages.microsoft.com/repos/code stable/main armhf Packages [17,1 kB]
+Holen:39 https://packages.microsoft.com/repos/code stable/main amd64 Packages [17,0 kB]
+Holen:40 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [618 kB]
+Holen:41 http://security.ubuntu.com/ubuntu noble-security/main i386 Packages [237 kB]
+Holen:42 http://security.ubuntu.com/ubuntu noble-security/main Translation-en [118 kB]
+Holen:43 http://security.ubuntu.com/ubuntu noble-security/main amd64 Components [8.968 B]
+Holen:44 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [625 kB]
+Holen:45 http://security.ubuntu.com/ubuntu noble-security/restricted Translation-en [121 kB]
+Holen:46 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Components [212 B]
+Holen:47 http://security.ubuntu.com/ubuntu noble-security/universe i386 Packages [504 kB]
+Holen:48 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [803 kB]
+Holen:49 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Components [52,0 kB]
+Holen:50 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Components [212 B]
+Es wurden 8.475 kB in 2 s geholt (4.612 kB/s).
+Paketlisten werden gelesen…
+Paketlisten werden gelesen…
+Abhängigkeitsbaum wird aufgebaut…
+Statusinformationen werden eingelesen…
+Das folgende Paket wurde automatisch installiert und wird nicht mehr benötigt:
+  libllvm17t64
+Verwenden Sie »sudo apt autoremove«, um es zu entfernen.
+Die folgenden NEUEN Pakete werden installiert:
+  terraform
+0 aktualisiert, 1 neu installiert, 0 zu entfernen und 38 nicht aktualisiert.
+Es müssen 27,4 MB an Archiven heruntergeladen werden.
+Nach dieser Operation werden 90,2 MB Plattenplatz zusätzlich benutzt.
+Holen:1 https://apt.releases.hashicorp.com noble/main amd64 terraform amd64 1.10.5-1 [27,4 MB]
+Es wurden 27,4 MB in 0 s geholt (62,9 MB/s).
+Vormals nicht ausgewähltes Paket terraform wird gewählt.
+(Lese Datenbank ... (Lese Datenbank ... 5%(Lese Datenbank ... 10%(Lese Datenbank ... 15%(Lese Datenbank ... 20%(Lese Datenbank ... 25%(Lese Datenbank ... 30%(Lese Datenbank ... 35%(Lese Datenbank ... 40%(Lese Datenbank ... 45%(Lese Datenbank ... 50%(Lese Datenbank ... 55%(Lese Datenbank ... 60%(Lese Datenbank ... 65%(Lese Datenbank ... 70%(Lese Datenbank ... 75%(Lese Datenbank ... 80%(Lese Datenbank ... 85%(Lese Datenbank ... 90%(Lese Datenbank ... 95%(Lese Datenbank ... 100%(Lese Datenbank ... 308969 Dateien und Verzeichnisse sind derzeit installiert.)
+Vorbereitung zum Entpacken von .../terraform_1.10.5-1_amd64.deb ...
+Entpacken von terraform (1.10.5-1) ...
+terraform (1.10.5-1) wird eingerichtet ...
+Terraform installed
+Terraform version: Terraform v1.10.5
+on linux_amd64
