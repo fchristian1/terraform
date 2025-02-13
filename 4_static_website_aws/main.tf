@@ -3,10 +3,17 @@ provider "aws" {
   region = "eu-central-1"
 
 }
-
+# This resource generates a random integer between 10000 and 99999. It is used to create a unique name for the S3 bucket.
+resource "random_integer" "random" {
+  min = 10000
+  max = 99999
+  keepers = {
+    always_same = "static_value"
+  }
+}
 # This is the configuration for the S3 bucket. It creates a bucket with the specified name and enables public access.
 resource "aws_s3_bucket" "website" {
-  bucket = "website-123252514"
+  bucket = "website-${random_integer.random.result}"
 }
 
 # This resource configures the public access block settings for the S3 bucket.
@@ -69,8 +76,11 @@ output "website_url" {
   value = "http://${aws_s3_bucket.website.website_endpoint}/"
 
 }
-
-# Upload files to the S3 bucket
+# This local block defines the MIME types for the files in the website directory.
+locals {
+  mime_types = jsondecode(file("${path.module}/mime.json"))
+}
+# Upload files to the S3 bucket using the aws_s3_object resource.
 resource "aws_s3_object" "source_files" {
   bucket = aws_s3_bucket.website.id
 
@@ -78,7 +88,8 @@ resource "aws_s3_object" "source_files" {
 
   key          = each.value
   source       = "${path.module}/website/${each.value}"
-  content_type = each.value
+  content_type = lookup(local.mime_types, regex("\\.[^.]+$", each.value), null)
+
 }
 
 # Configure the S3 bucket as a static website
