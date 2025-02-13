@@ -1,4 +1,6 @@
-
+provider "aws" {
+  region = "eu-central-1" # Ändere die Region nach Bedarf
+}
 resource "tls_private_key" "my_key" {
   algorithm = "RSA"
   rsa_bits  = 4096
@@ -10,9 +12,7 @@ resource "local_file" "my_key_file" {
   filename        = "${path.module}/my_key.pem"
 }
 
-provider "aws" {
-  region = "eu-central-1" # Ändere die Region nach Bedarf
-}
+
 
 resource "aws_key_pair" "my_aws_key" {
   key_name   = "my_aws_key"
