@@ -1,6 +1,8 @@
 # Terrraform AWS Multi Instance Setup
 ## create a inventoryfile for ansible
 
+login aws cli
+
 ```bash
 terraform init
 terraform apply
