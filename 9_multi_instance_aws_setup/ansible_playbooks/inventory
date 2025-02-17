@@ -1,6 +1,7 @@
 [web:vars]
 ansible_ssh_user=ubuntu
-ansible_ssh_private_key_file=./my_key.pem
+ansible_ssh_private_key_file=./../my_key.pem
+
 [web]
 3.127.203.17
 18.194.53.161
