@@ -72,10 +72,23 @@ data "external" "generate_inventory" {
     INVENTORY_FILE="./ansible_playbooks/inventory"
     echo "[web:vars]" > $INVENTORY_FILE
     echo "ansible_ssh_user=ubuntu" >> $INVENTORY_FILE
-    echo "ansible_ssh_private_key_file=./my_key.pem" >> $INVENTORY_FILE
+    echo "ansible_ssh_private_key_file=./../my_key.pem" >> $INVENTORY_FILE
     echo "" >> $INVENTORY_FILE
     echo "[web]" >> $INVENTORY_FILE
 
+    for ip in ${join(" ", module.aws-instances[*].public_ip)}; do
+      echo "$ip" >> $INVENTORY_FILE
+    done
+
+    echo "{\"status\": \"success\"}"
+  EOT
+  ]
+}
+data "external" "ips_file" {
+  depends_on = [module.aws-instances]
+
+  program = ["bash", "-c", <<EOT
+    INVENTORY_FILE="./ansible_playbooks/ips"
     for ip in ${join(" ", module.aws-instances[*].public_ip)}; do
       echo "$ip" >> $INVENTORY_FILE
     done
