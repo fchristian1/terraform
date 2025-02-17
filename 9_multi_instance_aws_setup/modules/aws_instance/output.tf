@@ -9,3 +9,12 @@ output "ec2_public_ip" {
 output "ansible_ssh_command" {
   value = "ansible -i ${aws_instance.instance.public_ip}, -u ubuntu --private-key my_key.pem all -m ping"
 }
+
+output "ansible_addHost_command" {
+  value = "ansible-inventory -i ${aws_instance.instance.public_ip}, --list"
+}
+
+output "public_ip" {
+  value = aws_instance.instance.public_ip
+
+}
