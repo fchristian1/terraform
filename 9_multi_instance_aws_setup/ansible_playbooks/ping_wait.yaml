@@ -1,0 +1,7 @@
+- name: reachability check
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: wait for connection
+      ansible.builtin.wait_for_connection:
+        timeout: 300 # 5 minutes

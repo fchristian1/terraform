@@ -1,2 +1,3 @@
 #!/bin/bash
-cd ansible_playbooks/ && ansible -i inventory all -m ping
+cd ansible_playbooks/
+ansible-playbook -i inventory ping_wait.yaml

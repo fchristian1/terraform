@@ -89,6 +89,7 @@ data "external" "ips_file" {
 
   program = ["bash", "-c", <<EOT
     INVENTORY_FILE="./ansible_playbooks/ips"
+    echo -n > $INVENTORY_FILE
     for ip in ${join(" ", module.aws-instances[*].public_ip)}; do
       echo "$ip" >> $INVENTORY_FILE
     done
