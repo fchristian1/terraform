@@ -1,0 +1,26 @@
+---
+- hosts: web
+  become: true
+  vars:
+    admin_user: ubuntu
+  tasks:
+    - name: Add adminstrator to docker group
+      user:
+        name: "{{ admin_user }}"
+        groups: docker
+        append: true
+        createhome: true
+    - name: Set up docker-compose file
+      template:
+        src: "./docker-compose.yaml"
+        dest: "/home/{{ admin_user }}/wordpress/"
+
+    - name: Set permission for docker daemon
+      file:
+        path: /var/run/docker.sock
+        mode: '0770'
+
+    - name: docker compose up
+      shell:
+        chdir: "/home/{{ admin_user }}/wordpress/"
+        cmd: docker compose up -d

@@ -1,0 +1,10 @@
+---
+- hosts: web
+  become: true
+  vars:
+    admin_user: ubuntu
+  tasks:
+    - name: docker compose down
+      shell:
+        chdir: "/home/{{ admin_user }}/wordpress/"
+        cmd: docker compose down && docker compose rm -f --volumes

@@ -1,0 +1,70 @@
+- name: Create deploy user with SSH access
+  hosts: all  # Oder spezifische Gruppe, z. B. "webservers"
+  become: true
+  vars:
+    user_name: "deploy"
+    user_group: "deploy"
+    local_ssh_key_file: "./deploy_id_rsa"
+    remote_ssh_key_file: "/home/{{ user_name }}/.ssh/id_rsa"
+  tasks:
+    - name: Create group for the user
+      group:
+        name: "{{ user_group }}"
+        state: present
+
+    - name: Create deploy user
+      user:
+        name: "{{ user_name }}"
+        group: "{{ user_group }}"
+        home: "/home/{{ user_name }}"
+        shell: "/bin/bash"
+        create_home: yes
+        password: "!"  # Sperrt Passwort-Login
+        state: present
+
+    - name: Ensure .ssh directory exists
+      file:
+        path: "/home/{{ user_name }}/.ssh"
+        state: directory
+        owner: "{{ user_name }}"
+        group: "{{ user_group }}"
+        mode: '0700'
+
+    - name: Generate SSH key locally
+      command: "ssh-keygen -t rsa -b 4096 -f {{ local_ssh_key_file }} -N ''"
+      delegate_to: localhost
+      run_once: true
+      args:
+        creates: "{{ local_ssh_key_file }}"
+      become: false  # Verhindert sudo-Passwortaufforderung
+
+    - name: Ensure authorized_keys file exists
+      file:
+        path: "/home/{{ user_name }}/.ssh/authorized_keys"
+        state: touch
+        owner: "{{ user_name }}"
+        group: "{{ user_group }}"
+        mode: '0600'
+
+    - name: Copy public key to authorized_keys file
+      lineinfile:
+        path: "/home/{{ user_name }}/.ssh/authorized_keys"
+        line: "{{ lookup('file', local_ssh_key_file + '.pub') }}"
+        create: yes
+        owner: "{{ user_name }}"
+        group: "{{ user_group }}"
+        mode: '0600'
+
+    - name: Disable root login via SSH
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin no'
+        state: present
+      notify: Restart SSH
+
+  handlers:
+    - name: Restart SSH
+      service:
+        name: ssh # check the name of the deamonname on the hostsystem # dimi war hier
+        state: restarted

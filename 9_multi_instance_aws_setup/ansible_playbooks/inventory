@@ -3,6 +3,6 @@ ansible_ssh_user=ubuntu
 ansible_ssh_private_key_file=./../my_key.pem
 
 [web]
-3.121.74.241
-3.70.203.2
-3.68.158.122
+3.72.3.137
+18.156.84.115
+3.74.169.18

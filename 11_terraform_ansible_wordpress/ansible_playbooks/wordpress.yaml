@@ -1,0 +1,113 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    db_name: your_database_name
+    db_user: your_database_user
+    db_password: your_database_password
+    db_host: localhost
+    mysql_root_password: your_mysql_root_password
+  tasks:
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+        upgrade: 'yes'
+
+    - name: Install necessary packages
+      apt:
+        name: ['apache2', 'mysql-server', 'python3-pymysql', 'php', 'php-mysql', 'libapache2-mod-php', 'php-cli', 'wget', 'unzip']
+        state: present
+
+    - name: Download WordPress
+      get_url:
+        url: https://wordpress.org/latest.zip
+        dest: ./latest.zip
+      delegate_to: localhost
+      become: false
+
+    - name: Copy WordPress to remote host
+      copy:
+        src: ./latest.zip
+        dest: /tmp/latest.zip
+    - name: Delete /var/www/wordpress when exists
+      command: rm -rf /var/www/wordpress
+      ignore_errors: yes
+      
+    - name: Unzip WordPress
+      unarchive:
+        src: /tmp/latest.zip
+        dest: /var/www/
+        remote_src: yes
+
+    - name: Check if WordPress directory exists
+      stat:
+        path: /var/www/wordpress/
+      register: wordpress_dir
+
+    - name: Ensure /var/www/wordpress exists
+      file:
+        path: /var/www/wordpress
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+
+
+    - name: Copy sample config file
+      command: cp /var/www/wordpress/wp-config-sample.php /var/www/wordpress/wp-config.php
+
+    - name: Update WordPress config file
+      lineinfile:
+        path: /var/www/wordpress/wp-config.php
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: 'database_name_here', line: "define('DB_NAME', '{{ db_name }}');" }
+        - { regexp: 'username_here', line: "define('DB_USER', '{{ db_user }}');" }
+        - { regexp: 'password_here', line: "define('DB_PASSWORD', '{{ db_password }}');" }
+        - { regexp: 'localhost', line: "define('DB_HOST', '{{ db_host }}');" }
+    - name: emtying the apache root directory
+      command: rm -rf /var/www/html/*
+
+    - name: Copy WordPress to Apache root
+      command: cp -r /var/www/wordpress/. /var/www/html/
+      when: wordpress_dir.stat.exists and wordpress_dir.stat.isdir
+
+    - name: Setze MySQL-Root-Passwort (nur falls nötig)
+      community.mysql.mysql_user:
+        name: root
+        password: "{{ mysql_root_password }}"
+        login_user: root
+        login_password: ""
+        host: "localhost"
+        state: present
+      ignore_errors: yes  # Falls das Passwort bereits gesetzt ist, ignoriere Fehler
+
+    - name: Entferne `auth_socket`-Authentifizierung für root (falls aktiv)
+      command: >
+        mysql -u root -p{{ mysql_root_password }} -e 
+        "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{{ mysql_root_password }}';"
+      ignore_errors: yes  # Falls nicht nötig, ignorieren
+
+    - name: Erstelle eine neue MySQL-Datenbank
+      community.mysql.mysql_db:
+        name: "{{ db_name }}"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+
+    - name: Erstelle MySQL-Benutzer und gebe Rechte auf die DB
+      community.mysql.mysql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        priv: "{{ db_name }}.*:ALL"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+        
+    - name: Ensure Apache is running
+      service:
+        name: apache2
+        state: started
+        enabled: yes

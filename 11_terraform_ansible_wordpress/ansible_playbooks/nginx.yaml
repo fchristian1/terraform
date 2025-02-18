@@ -1,0 +1,25 @@
+---
+- name: Nginx Playbook # Playbook name
+  hosts: web # Group name
+  become: true # Run as root
+  tasks: # List of tasks
+    - name: Install Nginx # Task name
+      apt: # Module name
+        name: nginx # Module argument
+        state: present # Module argument
+    - name: Start Nginx # Task name
+      service: # Module name
+        name: nginx # Module argument
+        state: started # Module argument
+        enabled: true # Module argument
+    - name: Copy index.html
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
