@@ -3,6 +3,7 @@ terraform.tfstate*
 node_modules
 dist
 build
-*pem
+*rsa*
+*pem*
 *.pem
 inventory
