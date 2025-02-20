@@ -11,6 +11,18 @@ terraform apply
 ## Run the ansible scripts
 
 ```bash
-ansiblePing.sh # to check if the instances are reachable
-ansiblePlaybook.sh # to run the playbook
+./ansible-Ping.sh # to check if the instances are reachable
+./ansiblePlay.sh # to run the playbook
+```
+
+## to run all
+
+```bash
+./create.sh
+```
+
+## to destroy all
+
+```bash
+./destroy.sh
 ```
