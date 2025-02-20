@@ -5,8 +5,8 @@
   tasks:
       - name: Nginx
         include_tasks: tasks/nginx.yml
-      # - name: Create HTML files
-      #   include_tasks: tasks/createHTMLFiles.yml
+      - name: Create HTML files
+        include_tasks: tasks/createHTMLFiles.yml
       - name: Create (htpasswd) file
         include_tasks: tasks/createHtpasswdFile.yml
       - name: Health

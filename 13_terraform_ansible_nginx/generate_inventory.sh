@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TYPE_IP_FILE="./type_ips"
-INVENTORY_FILE="./inventory"
+INVENTORY_FILE="./ansible_playbooks/inventory"
 
 # Inventardatei leeren
 #>"$INVENTORY_FILE"
