@@ -1,0 +1,7 @@
+#install nginx
+- name: Install nginx
+  block:
+      - apt:
+            name: nginx
+            state: present
+            update_cache: yes

@@ -1,0 +1,21 @@
+# create html files from var users with content:
+# <h1>Das ist die Seite von <username></h1> when user developer
+# <h1>Willkommen auf der VIP-Seite von <username></h1><p>Hier gibt es exklusive Inhalte!</p> when user boss
+
+- name: Add all users to a single block in an HTML file
+  ansible.builtin.blockinfile:
+      path: /var/www/html/index.html
+      block: |
+          <h1>Users</h1>
+          <p>Here is a list of all users:</p>
+          {% for user in users %}
+          <a href="{{ user.name }}.html">{{ user.name }}</a><br>
+          {% endfor %}
+      marker: "<!-- {mark} User List -->"
+      create: yes
+
+- name: Create HTML files from template files/index.heml.j2
+  ansible.builtin.template:
+      src: files/index.html.j2
+      dest: /var/www/html/{{ item.name }}.html
+  loop: "{{ users }}"

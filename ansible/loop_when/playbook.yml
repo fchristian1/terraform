@@ -1,0 +1,20 @@
+- hosts: server
+  become: true
+  vars:
+      install: ["nginx", "curl", "git"]
+      system: "ubuntu"
+  tasks:
+      - name: Update and upgrade apt packages
+        apt:
+            update_cache: yes
+            upgrade: "yes"
+      - name: Install necessary packages wiht a loop
+        apt:
+            name: "{{ item }}"
+            state: present
+        loop: "{{ install }}"
+      - name: Create a File when system is ubuntu
+        copy:
+            content: "Install {{ install | join(', ') }}\n"
+            dest: /tmp/ubuntu.txt
+        when: system == "ubuntu"

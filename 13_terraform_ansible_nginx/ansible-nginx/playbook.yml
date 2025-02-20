@@ -1,0 +1,15 @@
+- hosts: all
+  become: true
+  vars_files:
+      - vars/users.yml
+  tasks:
+      - name: Nginx
+        include_tasks: tasks/nginx.yml
+      # - name: Create HTML files
+      #   include_tasks: tasks/createHTMLFiles.yml
+      - name: Create (htpasswd) file
+        include_tasks: tasks/createHtpasswdFile.yml
+      - name: Health
+        include_tasks: tasks/health.yml
+  handlers:
+      - import_tasks: handlers/main.yml

@@ -45,7 +45,7 @@ module "sg" {
 module "aws-instances" {
   source             = "./modules/aws_instance"
   instance_name      = "server-${count.index}"
-  count              = 3
+  count              = 1
   key_name           = module.key_pair.name
   security_group_ids = values(module.sg.sg_ids)
   providers = {

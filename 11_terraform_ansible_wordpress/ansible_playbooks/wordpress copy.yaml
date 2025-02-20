@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  become: true
+  become: yes
   vars:
     db_name: your_database_name
     db_user: your_database_user
@@ -10,18 +10,14 @@
   tasks:
     - name: Update and upgrade apt packages
       apt:
-        update_cache: true
+        update_cache: yes
         upgrade: 'yes'
 
     - name: Install necessary packages
       apt:
-        name: ['apache2', 'python3-pymysql', 'php', 'php-mysql', 'libapache2-mod-php', 'php-cli', 'wget', 'unzip']
+        name: ['apache2', 'mysql-server', 'python3-pymysql', 'php', 'php-mysql', 'libapache2-mod-php', 'php-cli', 'wget', 'unzip']
         state: present
-    - name:
-      apt:
-        name: mysql-server
-        state: present   
-      when: db_host == 'localhost'
+
     - name: Download WordPress
       get_url:
         url: https://wordpress.org/latest.zip
@@ -35,13 +31,13 @@
         dest: /tmp/latest.zip
     - name: Delete /var/www/wordpress when exists
       command: rm -rf /var/www/wordpress
-      ignore_errors: true
+      ignore_errors: yes
       
     - name: Unzip WordPress
       unarchive:
         src: /tmp/latest.zip
         dest: /var/www/
-        remote_src: true
+        remote_src: yes
 
     - name: Check if WordPress directory exists
       stat:
@@ -71,9 +67,8 @@
         - { regexp: 'username_here', line: "define('DB_USER', '{{ db_user }}');" }
         - { regexp: 'password_here', line: "define('DB_PASSWORD', '{{ db_password }}');" }
         - { regexp: 'localhost', line: "define('DB_HOST', '{{ db_host }}');" }
-    
-    - name: Delete default Apache index.html
-      command: rm -rf /var/www/html/index.html
+    - name: emtying the apache root directory
+      command: rm -rf /var/www/html/*
 
     - name: Copy WordPress to Apache root
       command: cp -r /var/www/wordpress/. /var/www/html/
@@ -87,14 +82,13 @@
         login_password: ""
         host: "localhost"
         state: present
-      when: db_host == 'localhost'
-      ignore_errors: true  # Falls das Passwort bereits gesetzt ist, ignoriere Fehler
+      ignore_errors: yes  # Falls das Passwort bereits gesetzt ist, ignoriere Fehler
 
     - name: Entferne `auth_socket`-Authentifizierung für root (falls aktiv)
       command: >
         mysql -u root -p{{ mysql_root_password }} -e 
         "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{{ mysql_root_password }}';"
-      ignore_errors: true  # Falls nicht nötig, ignorieren
+      ignore_errors: yes  # Falls nicht nötig, ignorieren
 
     - name: Erstelle eine neue MySQL-Datenbank
       community.mysql.mysql_db:
@@ -116,4 +110,4 @@
       service:
         name: apache2
         state: started
-        enabled: true
+        enabled: yes

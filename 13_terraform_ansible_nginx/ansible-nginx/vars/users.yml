@@ -1,0 +1,31 @@
+users:
+    - name: ilona
+      position: Developer
+    - name: marcus
+      position: Developer
+    - name: christian
+      position: Developer
+    - name: dima
+      position: Developer
+    - name: jihen
+      position: Developer
+    - name: armin
+      position: Developer
+    - name: alexander
+      position: Developer
+    - name: kaho
+      position: Developer
+    - name: luca
+      position: Developer
+    - name: timo
+      position: Developer
+    - name: gabriel
+      position: Developer
+    - name: viktor
+      position: Developer
+    - name: lukas
+      position: Boss
+    - name: arnold
+      position: Boss
+    - name: dimi
+      position: Boss

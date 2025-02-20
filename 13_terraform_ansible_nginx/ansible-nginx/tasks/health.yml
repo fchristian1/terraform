@@ -1,0 +1,28 @@
+- name: Install Ansible
+  apt:
+      name: nginx
+      state: present
+      update_cache: yes
+- name: Install Cron
+  apt:
+      name: cron
+      state: present
+      update_cache: yes
+# erstelle ansible ordner /etc/ansible
+- name: Erstelle das Verzeichnis /etc/ansible
+  ansible.builtin.file:
+      path: /etc/ansible
+      state: directory
+      mode: 0755
+
+- name: Kopiere das Playbook auf den Webserver
+  ansible.builtin.copy:
+      src: ./files/check_nginx.yml
+      dest: /etc/ansible/check_nginx.yml
+      mode: 0755
+
+- name: Füge einen Cron-Job hinzu, um das Playbook alle 5 Minuten auszuführen
+  ansible.builtin.cron:
+      name: "Überprüfe Nginx-Dienst"
+      job: "ansible-playbook /etc/ansible/check_nginx.yml"
+      minute: "*/5"

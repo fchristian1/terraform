@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Willkommen {{ item.name }}</title>
+</head>
+<body>
+    {% if item.position == "Developer" %}
+        <h1>Das ist die Seite von {{ item.name }}</h1>
+    {% elif item.position == "Boss" %}
+        <h1>Willkommen auf der VIP-Seite von {{ item.name }}</h1><p>Hier gibt es exklusive Inhalte!</p>
+    {% else %}
+        <h1>Willkommen auf der Standard-Seite von {{ item.name }}</h1>
+    {% endif %}
+
+</body>
+</html>
