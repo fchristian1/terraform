@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: server
   become: true
   vars_files:
       - vars/users.yml
@@ -11,5 +11,6 @@
         include_tasks: tasks/createHtpasswdFile.yml
       - name: Health
         include_tasks: tasks/health.yml
-  handlers:
-      - import_tasks: handlers/main.yml
+      - name: Ausgabe der Webadresse in der Konsole
+        ansible.builtin.debug:
+            msg: "Die Webadresse ist: http://{{ ansible_host }}"
